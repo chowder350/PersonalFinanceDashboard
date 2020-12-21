@@ -30,7 +30,9 @@ class Link extends Component {
     var data = {
       public_token: public_token
     }
-    await axios.post("/exchange_public_token", data);
+    var response = await axios.post("/exchange_public_token", data);
+    console.log(response)
+    //to do set accessToken into sessionStorage then move onto UI calls in other components.
 
   }
 
@@ -41,11 +43,7 @@ class Link extends Component {
    
   render() {
     const {linkToken} = this.state
-    console.log(linkToken.toString())
 
-    if(linkToken.toString !== 'undefined'){
-      console.log("wtf")
-    }
     return (
       
       <div>
