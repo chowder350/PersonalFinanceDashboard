@@ -3,7 +3,7 @@ var moment = require("moment");
 
 var PLAID_CLIENT_ID = process.env.REACT_APP_PLAID_CLIENT_ID;;
 var PLAID_SECRET = process.env.REACT_APP_PLAID_SECRET;
-var PLAID_PUBLIC_KEY = "your public key here";
+var PLAID_PUBLIC_KEY = public_token;
 var PLAID_ENV = "development";
 
 var ACCESS_TOKEN = null;
@@ -58,6 +58,27 @@ const getTransactions = (req, res) => {
     }
   );
 };
+
+const response = await client
+  .createLinkToken({
+    user: {
+      client_user_id: '123445',
+    },
+    client_name: 'Plaid Test App',
+    products: ['auth', 'transactions'],
+    country_codes: ['US'],
+    language: 'en',
+    account_filters: {
+      depository: {
+        account_subtypes: ['checking', 'savings'],
+      },
+    },
+  })
+  .catch((err) => {
+    // handle error
+  });
+
+const linkToken = response.link_token;
 
 module.exports = {
   receivePublicToken,
