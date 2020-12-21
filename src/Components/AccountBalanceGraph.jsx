@@ -14,7 +14,7 @@ class AccountBalanceGraph extends Component {
   }
   handleOnSuccess(token, metadata) {
     // send token to client server
-    //console.log(token)
+    console.log(token)
   }
   handleOnExit() {
     // handle the case when your user exits Link
@@ -22,6 +22,7 @@ class AccountBalanceGraph extends Component {
 
  componentDidMount(){
   //console.log(process.env.REACT_APP_PLAID_CLIENT_ID);
+  console.log(this.props)
  }
   
 
