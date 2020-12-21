@@ -1,52 +1,45 @@
 import React, { Component } from "react";
 import PlaidLink from "react-plaid-link";
-import axios from "axios";
+import axios from 'axios';
+import {localhostApi} from '../Constants'
+
 
 class Link extends Component {
   constructor() {
     super();
 
     this.state = {
-      transactions: []
+      data: "",
+      linkToken: '',
     };
 
-    this.handleClick = this.handleClick.bind(this);
   }
 
-  handleOnSuccess(public_token, metadata) {
-    // send token to client server
-    axios.post("/auth/public_token", {
-      public_token: public_token
-    });
+
+  componentDidMount = async () =>{
+    var response = await axios.get("/express_backend")
+    //console.log(response.data["express"]);
+    this.setState({data:response.data["express"] })
+
+    var response = await axios.post("/create_link_token")
+    this.setState({linkToken: response.data["link_token"]})
+    //console.log(response)
+
+    
   }
 
-  handleOnExit() {
-    // handle the case when your user exits Link
-    // For the sake of this tutorial, we're not going to be doing anything here.
-  }
+   
 
-  handleClick(res) {
-    axios.get("/transactions").then(res => {
-      this.setState({ transactions: res.data });
-    });
-  }
 
+
+ 
   render() {
+    console.log(this.state.linkToken)
     return (
       <div>
-        <PlaidLink
-          clientName="React Plaid Setup"
-          env="sandbox"
-          product={["auth", "transactions"]}
-          publicKey={public_token}
-          onExit={this.handleOnExit}
-          onSuccess={this.handleOnSuccess}
-          className="test"
-        >
-          Open Link and connect your bank!
-        </PlaidLink>
         <div>
           <button onClick={this.handleClick}>Get Transactions</button>
+          <p>{this.state.data}</p>
         </div>
       </div>
     );

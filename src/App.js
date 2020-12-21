@@ -1,14 +1,15 @@
 
 import './App.css';
 import AccountBalanceGraph from './Components/AccountBalanceGraph';
-//import PlaidLink from 'react-plaid-link'
+import Link from './Components/Link'
 
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-     <AccountBalanceGraph/>
+      <p>test</p>
+      <Link/>
       
 
         

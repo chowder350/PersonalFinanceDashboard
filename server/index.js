@@ -1,22 +1,38 @@
+require('dotenv').config();
+const moment = require("moment");
 const express = require("express");
+const plaid = require("plaid")
 const app = express();
 const PORT = 4090;
 
-const {
-    receivePublicToken,
-    getTransactions, 
-    createLinkToken
-    } = require("./controllers/controller");
+const ACCESS_TOKEN = null;
+const PUBLIC_TOKEN = null;
+const ITEM_ID = null;
+
+// Initialize the Plaid client
+const client = new plaid.Client({
+  clientID: process.env.REACT_APP_PLAID_CLIENT_ID,
+  secret: process.env.REACT_APP_PLAID_SECRET,
+  env: plaid.environments.sandbox,
+});
+
+console.log(client)
 
 app.use(express.json());
 
+// create a GET route
+app.get('/express_backend', (req, response) => {
+  response.send({ express: 'YOUR EXPRESS BACKEND IS CONNECTED TO REACT' });
+});
+
 //updated link_token 
 app.post('/create_link_token', async (request, response, next) => {
+  try{
     // 1. Grab the client_user_id by searching for the current user in your database
-    const user = await User.find(...);
-    const clientUserId = user.id;
+    const user = "nah"
+    const clientUserId = "wow123";
     // 2. Create a link_token for the given user
-    const linkTokenResponse = await plaidClient.createLinkToken({
+    const linkTokenResponse = await client.createLinkToken({
       user: {
         client_user_id: clientUserId,
       },
@@ -24,19 +40,16 @@ app.post('/create_link_token', async (request, response, next) => {
       products: ['transactions'],
       country_codes: ['US'],
       language: 'en',
-      webhook: 'https://sample.webhook.com',
     });
     const link_token = linkTokenResponse.link_token;
     // 3. Send the data to the client
     response.json({ link_token });
-  });
-
-// Get the public token and exchange it for an access token
-app.post("/auth/public_token", receivePublicToken);
-// Get Transactions
-app.get("/transactions", getTransactions);
-
-app.post("/link/token/create", createLinkToken)
+  }
+  catch(e){
+    console.log(e)
+  }
+ 
+});
 
 
 
