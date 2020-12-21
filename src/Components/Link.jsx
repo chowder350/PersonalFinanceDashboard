@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import PlaidLink from "react-plaid-link";
+import {PlaidLink} from "react-plaid-link";
 import axios from 'axios';
 import {localhostApi} from '../Constants'
 
@@ -10,7 +10,7 @@ class Link extends Component {
 
     this.state = {
       data: "",
-      linkToken: '',
+      linkToken: "",
     };
 
   }
@@ -18,27 +18,50 @@ class Link extends Component {
 
   componentDidMount = async () =>{
     var response = await axios.get("/express_backend")
-    //console.log(response.data["express"]);
     this.setState({data:response.data["express"] })
 
     var response = await axios.post("/create_link_token")
     this.setState({linkToken: response.data["link_token"]})
-    //console.log(response)
 
-    
+  }
+
+  handleOnSuccess = async (public_token, metadata) => {
+    // send token to client server
+    var data = {
+      public_token: public_token
+    }
+    await axios.post("/exchange_public_token", data);
+
+  }
+
+  handleOnExit() {
+    // handle the case when your user exits Link
   }
 
    
-
-
-
- 
   render() {
-    console.log(this.state.linkToken)
+    const {linkToken} = this.state
+    console.log(linkToken.toString())
+
+    if(linkToken.toString !== 'undefined'){
+      console.log("wtf")
+    }
     return (
+      
       <div>
+       {linkToken.toString !== 'undefined' ? 
+       <PlaidLink 
+       token={linkToken.toString()} 
+       env="sandbox" 
+       onSuccess={this.handleOnSuccess}
+       onExit={this.handleOnExit}>
+         Enter In Account Info
+         </PlaidLink> 
+         : null
+        }
+      
+
         <div>
-          <button onClick={this.handleClick}>Get Transactions</button>
           <p>{this.state.data}</p>
         </div>
       </div>

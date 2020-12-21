@@ -25,7 +25,26 @@ app.get('/express_backend', (req, response) => {
   response.send({ express: 'YOUR EXPRESS BACKEND IS CONNECTED TO REACT' });
 });
 
-//updated link_token 
+//endpoint exchanges link token for an access token
+app.post('/exchange_public_token', async (request, response, next) => {
+  try{
+    console.log(request.body)
+    console.log(public_token)
+    const response = await client
+    .exchangePublicToken(public_token)
+    .catch((err) => {
+      console.log(err)
+    });
+  const accessToken = response.access_token;
+  const itemId = response.item_id;
+  }
+  catch(e){
+    console.log(e)
+  }
+ 
+});
+
+//endpoint returns link_token 
 app.post('/create_link_token', async (request, response, next) => {
   try{
     // 1. Grab the client_user_id by searching for the current user in your database
