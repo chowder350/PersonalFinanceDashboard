@@ -34,6 +34,8 @@ class Link extends Component {
     var response = await axios.post("/exchange_public_token", data);
     console.log(response)
     //to do set accessToken into sessionStorage then move onto UI calls in other components.
+    sessionStorage.setItem("accessToken", response.data["access_token"]);
+    <Redirect to="/dashboard"/>
 
   }
 
