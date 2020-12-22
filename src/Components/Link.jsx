@@ -10,7 +10,6 @@ class Link extends Component {
     super();
 
     this.state = {
-      data: "",
       linkToken: "",
     };
 
@@ -18,12 +17,8 @@ class Link extends Component {
 
 
   componentDidMount = async () =>{
-    var response = await axios.get("/express_backend")
-    this.setState({data:response.data["express"] })
-
     var response = await axios.post("/create_link_token")
-    this.setState({linkToken: response.data["link_token"]})
-
+    this.setState({linkToken: response.data["link_token"]});
   }
 
   handleOnSuccess = async (public_token, metadata) => {
@@ -52,15 +47,10 @@ class Link extends Component {
        env="sandbox" 
        onSuccess={this.handleOnSuccess}
        onExit={this.handleOnExit}>
-         Enter In Account Info
+         Connect Bank Account
          </PlaidLink> 
          : null
         }
-      
-
-        <div>
-          <p>{this.state.data}</p>
-        </div>
       </div>
     );
   }

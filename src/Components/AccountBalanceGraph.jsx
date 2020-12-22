@@ -31,8 +31,8 @@ class AccountBalanceGraph extends Component {
     console.log(data);
     return (
       <MDBContainer>
-      <h3 className="mt-5">Income Over Time</h3>
-      <Line options={{ responsive: true }} />
+      <h3 className="mt-5">Account Balance</h3>
+      <Line data={data} options={{ responsive: true }} />
       </MDBContainer>
        
     )
