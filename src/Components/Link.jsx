@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import {PlaidLink} from "react-plaid-link";
 import axios from 'axios';
 import {localhostApi} from '../Constants'
+import {Redirect} from 'react-router-dom'
 
 
 class Link extends Component {
@@ -38,6 +39,7 @@ class Link extends Component {
 
   handleOnExit() {
     // handle the case when your user exits Link
+    <Redirect to="/dashboard"/>
   }
 
    
