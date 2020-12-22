@@ -35,13 +35,8 @@ class Link extends Component {
     console.log(response)
     //to do set accessToken into sessionStorage then move onto UI calls in other components.
     sessionStorage.setItem("accessToken", response.data["access_token"]);
-    <Redirect to="/dashboard"/>
+    window.location.href="/dashboard"
 
-  }
-
-  handleOnExit() {
-    // handle the case when your user exits Link
-    <Redirect to="/dashboard"/>
   }
 
    

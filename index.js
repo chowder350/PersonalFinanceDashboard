@@ -5,10 +5,6 @@ const plaid = require("plaid")
 const app = express();
 const PORT = 4090;
 
-const ACCESS_TOKEN = null;
-const PUBLIC_TOKEN = null;
-const ITEM_ID = null;
-
 // Initialize the Plaid client
 const client = new plaid.Client({
   clientID: process.env.REACT_APP_PLAID_CLIENT_ID,
@@ -20,10 +16,24 @@ console.log(client)
 
 app.use(express.json());
 
-// create a GET route
-app.get('/express_backend', (req, response) => {
-  response.send({ express: 'YOUR EXPRESS BACKEND IS CONNECTED TO REACT' });
+//get account balances
+app.post('/accounts_balance', async (req, res) => {
+  try{
+    const response = await client.getBalance(req.body.access_token).catch((err) => {
+      // handle error
+      console.log(err);
+    });
+    //const accounts = response.accounts;
+    res.json({
+      accounts: response.accounts
+    });
+  }
+  catch(e){
+    console.log(e)
+  }
+ 
 });
+
 
 //endpoint exchanges public token for an access token currently working on this part
 app.post('/exchange_public_token', async (request, res, next) => {

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from 'axios';
+import AccountBalanceGraph from './AccountBalanceGraph'
 
 
 
@@ -14,12 +15,15 @@ class Dashboard extends Component {
 
 
   componentDidMount = async () =>{
-
+  
   }
 
   render() {
     return (
+    <div>
       <p>Dashboard</p>
+      <AccountBalanceGraph/>
+    </div>
       
     );
   }
