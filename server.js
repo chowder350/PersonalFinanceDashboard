@@ -1,13 +1,8 @@
 require('dotenv').config();
-const moment = require("moment");
 const express = require("express");
 const plaid = require("plaid")
 const app = express();
 const PORT = 4090;
-
-const ACCESS_TOKEN = null;
-const PUBLIC_TOKEN = null;
-const ITEM_ID = null;
 
 // Initialize the Plaid client
 const client = new plaid.Client({
@@ -20,10 +15,24 @@ console.log(client)
 
 app.use(express.json());
 
-// create a GET route
-app.get('/express_backend', (req, response) => {
-  response.send({ express: 'YOUR EXPRESS BACKEND IS CONNECTED TO REACT' });
+//get account balances
+app.post('/accounts_balance', async (req, res) => {
+  try{
+    const response = await client.getBalance(req.body.access_token).catch((err) => {
+      // handle error
+      console.log(err);
+    });
+    //const accounts = response.accounts;
+    res.json({
+      accounts: response.accounts
+    });
+  }
+  catch(e){
+    console.log(e)
+  }
+ 
 });
+
 
 //endpoint exchanges public token for an access token currently working on this part
 app.post('/exchange_public_token', async (request, res, next) => {
@@ -55,8 +64,8 @@ app.post('/exchange_public_token', async (request, res, next) => {
 app.post('/create_link_token', async (request, response, next) => {
   try{
     // 1. Grab the client_user_id by searching for the current user in your database
-    const user = "nah"
-    const clientUserId = "wow123";
+    const user = "testUser"
+    const clientUserId = "123";
     // 2. Create a link_token for the given user
     const linkTokenResponse = await client.createLinkToken({
       user: {

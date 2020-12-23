@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
-import { PlaidLink } from 'react-plaid-link';
-import plaid from 'plaid'
 import axios from 'axios';
+import { Line } from "react-chartjs-2";
+import { MDBContainer } from "mdbreact";
 
 
 
@@ -9,36 +9,31 @@ class AccountBalanceGraph extends Component {
   constructor() {
     super()
     this.state = {
-     
+     data:[],
     }
   }
-  handleOnSuccess(token, metadata) {
-    // send token to client server
-    console.log(token)
-  }
-  handleOnExit() {
-    // handle the case when your user exits Link
-  }
 
- componentDidMount(){
-  //console.log(process.env.REACT_APP_PLAID_CLIENT_ID);
-  console.log(this.props)
+
+ componentDidMount = async () =>{
+   //make api request to get accout balance data
+   if(sessionStorage.getItem("accessToken")){
+    var data = {
+        access_token: sessionStorage.getItem("accessToken")
+    }
+    console.log(sessionStorage.getItem("accessToken"))
+    var response = await axios.post("/accounts_balance", data);
+    this.setState({data: response.data["accounts"]});
+    }
  }
-  
-
-
+ 
   render() {
+    const {data} = this.state;
+    console.log(data);
     return (
-      // <PlaidLink
-      //   clientName="Dashboard"
-      //   env="development"
-      //   product={["auth", "transactions"]}
-      //   publicKey="PLAID_PUBLIC_KEY"
-      //   onExit={this.handleOnExit}
-      //   onSuccess={this.handleOnSuccess}>
-      //   Open Link and connect your bank!
-      // </PlaidLink>
-      <p>test</p>
+      <MDBContainer>
+      <h3 className="mt-5">Account Balance</h3>
+      <Line data={data} options={{ responsive: true }} />
+      </MDBContainer>
        
     )
   }
