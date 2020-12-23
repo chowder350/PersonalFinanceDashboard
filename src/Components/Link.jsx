@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 import {PlaidLink} from "react-plaid-link";
 import axios from 'axios';
-import {localhostApi} from '../Constants'
-import {Redirect} from 'react-router-dom'
-
 
 class Link extends Component {
   constructor() {
@@ -30,7 +27,6 @@ class Link extends Component {
     console.log(response)
     //to do set accessToken into sessionStorage then move onto UI calls in other components.
     sessionStorage.setItem("accessToken", response.data["access_token"]);
-    window.location.href="/dashboard"
 
   }
 
